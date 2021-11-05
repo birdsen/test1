@@ -1,1 +1,308 @@
+1	LC与L3的原语
+1.1	用户建立请求/响应消息
+1.1.1	场景描述
+L3向LC发送用户建立请求后，LC根据L3的用户建立请求建立用户实体，并返回响应消息。
+1.1.2	用户建立请求消息格式
+方向：L3→LC
+原语名：LCL3_SETUP_REQ_STRU
+IE/Group   Name	Type and   range	Length
+(Bytes)	Semantics   description	备注
+COMM_MSG_HEAD_STRU	 	4	消息头	typedef struct tag_GtL2MsgHeader {
+    GtL2MsgLayer src;
+    GtL2MsgLayer dst;
+    gt_u32 type;
+    gt_u32 len;
+} GtL2MsgHeader;
+usMsgType	UINT16	2	消息类型：用户建立请求 
+
+usTransactionId	UINT16	2	Transaction ID	L2-L3响应消息时ulTransactionId的填写遵守如下原则:
+1.	对于L2主动上报或者周期性上报的消息, TranscationId填0；
+2.	其余的场景 TranscationId均回填；
+ucRbId	UINT8	1	RB ID	
+ucRbType	UINT8	1	RB类型，0 SRB，1 DRB	
+ucLogChannelId	UINT8	1	逻辑信道ID	
+ucLcDirection	UINT8	1	0 uplinkOnly；1 downlinkOnly；2 both	
+ucLcMode	UINT8	1	0 m11,1 m12, 2 m21, 3 m22, 4 m3	
+ucEncryption	UINT8	1	0 false，1 true	
+ucIntegrityProtection	UINT8	1	0 false，1 true	
+ucLcID	UINT8	1	LC实体ID	
+usTRR	UINT16	2	(0..4095)，对应t-RR	
+usTPollPeriod	UINT16	2	(0..4095)，对应t-PollPeriod	
+usTPollRetransmit	UINT16	2	(0..4095)，对应t-PollRetransmit	
+usReserved	UINT16	2	保留	
+
+1.1.3	用户建立响应消息格式
+方向：LC→L3
+原语名：LCL3_SETUP_RSP_STRU
+IE/Group   Name	Type and   range	Length
+(Bytes)	Semantics   description	备注
+COMM_MSG_HEAD_STRU	 	4	消息头	typedef struct tag_GtL2MsgHeader {
+    GtL2MsgLayer src;
+    GtL2MsgLayer dst;
+    gt_u32 type;
+    gt_u32 len;
+} GtL2MsgHeader;
+usMsgType	UINT16	2	消息类型：用户建立响应	
+usTransactionId	UINT16	2	Transaction ID	L2-L3响应消息时ulTransactionId的填写遵守如下原则:
+1.	对于L2主动上报或者周期性上报的消息, TranscationId填0；
+2.	其余的场景 TranscationId均回填；
+ucResult	UINT8	1	0表示成功，其他：错误码	
+ucReserved[3]	UINT8	3	保留	
+1.2	用户修改请求/响应消息
+ 
+1.2.1	场景描述
+L3向LC发送用户修改请求后，LC根据L3的用户修改请求修改用户实体参数，并返回响应消息。
+1.2.2	用户修改请求消息格式
+方向：L3→LC
+原语名：LCL3_RECFG_REQ_STRU
+IE/Group   Name	Type and   range	Length
+(Bytes)	Semantics   description	备注
+COMM_MSG_HEAD_STRU	 	4	消息头	typedef struct tag_GtL2MsgHeader {
+    GtL2MsgLayer src;
+    GtL2MsgLayer dst;
+    gt_u32 type;
+    gt_u32 len;
+} GtL2MsgHeader;
+usMsgType	UINT16	2	消息类型：用户修改请求 	
+usTransactionId	UINT16	2	Transaction ID	
+ucRbId	UINT8	1	RB ID	
+ucRbType	UINT8	1	RB类型，0 SRB，1 DRB	
+ucLogChannelId	UINT8	1	逻辑信道ID	
+ucLcDirection	UINT8	1	0 uplinkOnly；1 downlinkOnly；2 both	
+ucLcMode	UINT8	1	0 m11,1 m12, 2 m21, 3 m22, 4 m3	
+ucEncryption	UINT8	1	0 false，1 true	
+ucIntegrityProtection	UINT8	1	0 false，1 true	
+ucLcID	UINT8	1	LC实体ID	
+usTRR	UINT16	2	(0..4095)，对应t-RR	
+usTPollPeriod	UINT16	2	(0..4095)，对应t-PollPeriod	
+usTPollRetransmit	UINT16	2	(0..4095)，对应t-PollRetransmit	
+usReserved	UINT16	2	保留	
+
+1.2.3	用户修改响应消息格式
+（和用户建立消息的响应一样）
+方向：LC→L3
+原语名：LCL3_RECFG_RSP_STRU
+IE/Group   Name	Type and   range	Length
+(Bytes)	Semantics   description	备注
+COMM_MSG_HEAD_STRU	 	4	消息头	typedef struct tag_GtL2MsgHeader {
+    GtL2MsgLayer src;
+    GtL2MsgLayer dst;
+    gt_u32 type;
+    gt_u32 len;
+} GtL2MsgHeader;
+usMsgType	UINT16	2	消息类型：用户修改响应	
+usTransactionId	UINT16	2	Transaction ID	
+ucResult	UINT8	1	0表示成功，其他：错误码	
+ucReserved[3]	UINT8	3	保留	
+1.3	用户释放请求
+ 
+1.3.1	场景描述
+L3向LC发送用户释放请求。
+1.3.2	用户释放请求消息格式
+方向：L3→LC
+原语名：LCL3_RELEASE_REQ_STRU
+IE/Group   Name	Type and   range	Length
+(Bytes)	Semantics   description	备注
+COMM_MSG_HEAD_STRU	 	4	消息头	typedef struct tag_GtL2MsgHeader {
+    GtL2MsgLayer src;
+    GtL2MsgLayer dst;
+    gt_u32 type;
+    gt_u32 len;
+} GtL2MsgHeader;
+usMsgType	UINT16	2	消息类型：用户释放请求	
+usTransactionId	UINT16	2	Transaction ID	
+ucLcInst	UINT8	1	LC实体ID	
+ucRbId	UINT8	1	RB ID	
+ucReserved[2]	UINT8	2	保留	
+1.3.3	用户释放响应消息格式（新增）
+（下表内容copy自上面的响应消息格式）
+方向：LC→L3
+原语名：LCL3_RELEASE_RSP_STRU
+IE/Group   Name	Type and   range	Length
+(Bytes)	Semantics   description	备注
+COMM_MSG_HEAD_STRU	 	4	消息头	typedef struct tag_GtL2MsgHeader {
+    GtL2MsgLayer src;
+    GtL2MsgLayer dst;
+    gt_u32 type;
+    gt_u32 len;
+} GtL2MsgHeader;
+usMsgType	UINT16	2	消息类型：用户修改响应	
+usTransactionId	UINT16	2	Transaction ID	
+ucResult	UINT8	1	0表示成功，其他：错误码	
+ucReserved[3]	UINT8	3	保留	
+
+1.4	SRB消息发送/接收指示（论文中不存在）
+ 
+1.4.1	场景描述
+L3向LC发送XRC信令。
+LC接收到的XRC信令递交给XRC层。
+1.4.2	SRB消息发送消息格式
+方向：L3→LC
+原语名：LCL3_SIGNAL_REQ_STRU
+IE/Group   Name	Type and   range	Length
+(Bytes)	Semantics   description	备注
+COMM_MSG_HEAD_STRU	 	4	消息头	typedef struct tag_GtL2MsgHeader {
+    GtL2MsgLayer src;
+    GtL2MsgLayer dst;
+    gt_u32 type;
+    gt_u32 len;
+} GtL2MsgHeader;
+usMsgType	UINT16	2	消息类型：SRB消息发送	
+usTransactionId	UINT16	2	Transaction ID	
+enUuMsgType	UINT8	1	0 xrcReconfiguration，
+1 xrcRelease，
+2 securityContexRequest，
+3 securityConfig，
+4 tNodeCapabilityRequest，
+5 associationSetupWithSec，
+6 associationSetupNonSec，
+7 glinkChannelStatusRequest，
+8 tlinkChannelStatusFeedback，
+9 testModeParameterRequest，
+10 testModeResponse
+少了CCCH？	
+ucLcInst	UINT8	1	LC实体ID	
+usDataByteLen	UINT16	2	SRB信令消息长度	
+ucXrcData[4]	UINT8	变长	信令payload	
+
+1.4.3	SRB接收指示消息格式
+方向：LC→L3
+原语名：LCL3_SIGNAL_RSP_STRU
+IE/Group   Name	Type and   range	Length
+(Bytes)	Semantics   description	备注
+COMM_MSG_HEAD_STRU	 	4	消息头	typedef struct tag_GtL2MsgHeader {
+    GtL2MsgLayer src;
+    GtL2MsgLayer dst;
+    gt_u32 type;
+    gt_u32 len;
+} GtL2MsgHeader;
+usMsgType	UINT16	2	消息类型：SRB消息发送	
+usTransactionId	UINT16	2	Transaction ID	
+enUuMsgType	UINT8	1	0 measurementReport，
+1 xrcReconfigurationComplete，
+2 xrcSetupComplete，
+3 securityContexRespond，
+4 curityConfigComplete，
+5 associationComplete，
+6 tNodeCapabilityFeedback，
+7 glinkChannelStatusFeedback，
+8 tNode-AssistantInformationReport，
+9 testModeRequest，
+10 testModeParameterResponse	
+ucLcInst	UINT8	1	LC实体ID	
+usDataByteLen	UINT16	2	SRB信令消息长度	
+ucXrcData[4]	UINT8	变长	信令payload	
+
+
+2	LC与DMAC的原语
+2.1	 LC 请求 MAC 分配资源（新增）
+（是否有必要新增？）
+2.1.1	场景描述
+LC 有数据待发往下层 MAC 时，需先组装原语MAC_STATUS_REQ 请求 MAC 分配资源，直到 MAC 通过原语 MAC_STATUS_IND 指示传输机会，再根据 MAC 指示的资源大小决策分段及修改 PDU 的 LC 头信息完成数据发送。
+2.1.2	消息格式
+方向：LC→DMAC
+原语名：LCDMAC_ SCHINFO _REQ_STRU
+下表根据论文编写。
+IE/Group Name	Type and range	Length
+(Bytes)	Semantics description	备注
+COMM_MSG_HEAD_STRU	 	4	消息头	typedef struct tag_GtL2MsgHeader {
+    GtL2MsgLayer src;
+    GtL2MsgLayer dst;
+    gt_u32 type;
+    gt_u32 len;
+} GtL2MsgHeader;
+usMsgType	gt_u16	2	消息类型
+
+usMacInstanceId	gt_u16	2	MAC实体号	
+usLcInstanceId	gt_u16	2	LC实体号	
+ucHarqProcNo	gt_u8	1	HARQ进程号	？
+ucLchId	gt_u8	1	逻辑信道号	
+ucRsv[3]	gt_u8	3	保留	
+usReqTransByteCnt	gt_u16	2	请求组包资源大小	
+
+
+
+
+
+
+
+
+
+2.2	DMAC通知LC下行调度指示消息
+ 
+2.2.1	场景描述
+DLSCH下行调度用户的资源分配完成后给LC的逻辑信道分配资源，通知LC进行组包。
+2.2.2	消息格式
+方向：DMAC→LC
+原语名：LCDMAC_ SCHINFO _RSP_STRU
+IE/Group Name	Type and range	Length
+(Bytes)	Semantics description	备注
+COMM_MSG_HEAD_STRU	 	4	消息头	typedef struct tag_GtL2MsgHeader {
+    GtL2MsgLayer src;
+    GtL2MsgLayer dst;
+    gt_u32 type;
+    gt_u32 len;
+} GtL2MsgHeader;
+usMsgType	gt_u16	2	消息类型
+
+usMacInstanceId	gt_u16	2	MAC实体号	
+usLcInstanceId	gt_u16	2	LC实体号	
+ucHarqProcNo	gt_u8	1	HARQ进程号 有什么用？	
+ucLchId	gt_u8	1	逻辑信道号	
+ucFrameNum	gt_u8	1	帧号
+
+ucRsv[3]	gt_u8	3	保留	
+usSuperFrmNo	gt_u16	2	超帧号	
+usTransByteCnt	gt_u16	2	可用组包资源大小	
+
+
+
+2.3	LC通知DMAC下行接收消息
+ 
+2.3.1	场景描述
+L3收到小区建立请求消息后，下发小区建立请求消息给MGM，并等待MGM的响应消息，如果MGM配置成功，那么返回成功响应消息，否则返回失败消息。
+小区建立请求消息中的保留字段(Rsv字段)填写为全0。
+2.3.2	消息格式
+方向：LC→DMAC
+原语名：LCDMAC_ DLTX _REQ_STRU
+IE/Group Name	Type and range	Length
+(Bytes)	Semantics description	备注
+COMM_MSG_HEAD_STRU	 	4	消息头	typedef struct tag_GtL2MsgHeader {
+    GtL2MsgLayer src;
+    GtL2MsgLayer dst;
+    gt_u32 type;
+    gt_u32 len;
+} GtL2MsgHeader;
+usMsgType	gt_u16	2	消息类型	
+usMacInstanceId	gt_u16	2	MAC实体号	
+ucHarqProcNo	gt_u8	1	HARQ进程号	
+ucLchId	gt_u8	1	逻辑信道	
+ucLstPdu	gt_u8	1	逻辑信道最后一个PDU标志
+
+ucFrameNum	gt_u8	1	帧号	
+ucRsv[2]	gt_u8	2	保留	
+usSuperFrmNo	gt_u16	2	超帧号	
+ucData[4]	gt_u8	4	数据指针地址	
+2.4	DMAC通知LC上行接收消息
+ 
+2.4.1	场景描述
+MAC上行接收报文解复用后发送给LC。
+2.4.2	消息格式
+方向：DMAC→LC
+原语名：LCDMAC_ ULRX _RSP_STRU
+IE/Group Name	Type and range	Length
+(Bytes)	Semantics description	备注
+COMM_MSG_HEAD_STRU	 	4	消息头	typedef struct tag_GtL2MsgHeader {
+    GtL2MsgLayer src;
+    GtL2MsgLayer dst;
+    gt_u32 type;
+    gt_u32 len;
+} GtL2MsgHeader;
+usMsgType	gt_u16	2	消息类型	
+usLcInstanceId	gt_u16	2	LC实体号	
+ucFrameNum	gt_u8	1	帧号	
+ucRsv	gt_u8	1	保留	
+usSuperFrmNo	gt_u16	2	超帧号	
+ucData[4]	gt_u8	4		
+
 
