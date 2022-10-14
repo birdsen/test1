@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import Count from './Count'
-import store from './store'
+import store from './redux/store'
 import { Provider } from "react-redux";
 
 export default class App extends Component {

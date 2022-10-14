@@ -1,4 +1,4 @@
-import { INCREMENT, DECREMENT } from './constant'
+import { INCREMENT, DECREMENT } from '../constants'
 
 const initState = { count: 0 } // 初始化state的时候用0来初始化
 // 形参的默认赋值，因为初始化的时候store传过来的preState是undefined，所以默认赋值initState
