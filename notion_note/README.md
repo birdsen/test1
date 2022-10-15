@@ -3,3 +3,5 @@
     - react_redux_basic2
     - react_redux_hook
     - redux_toolkit_basic
+- 以下项目从可运行的项目中摘抄过来，虽不能直接运行，但可确保没有逻辑错误：
+    - redux_toolkit_selector
