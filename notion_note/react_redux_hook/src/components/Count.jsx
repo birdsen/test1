@@ -1,39 +1,28 @@
 import React from "react";
-import { connect } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   createIncrementAction,
   createDecrementAction,
 } from "../redux/slices/count";
 
-const Count = (props) => {
+const Count = () => {
+  const num = useSelector(state => state.countState.count)
+  const dispatch = useDispatch()
+
   const handleIncrease = () => {
-    props.increase();
+    dispatch(createIncrementAction(1))
   };
   const handleDecrease = () => {
-    props.decrease();
+    dispatch(createDecrementAction(1))
   };
 
   return (
     <div>
-      <h1>当前求和为：{props.count}</h1>
+      <h1>当前求和为：{num}</h1>
       <button onClick={handleIncrease}>加1</button>
       <button onClick={handleDecrease}>减1</button>
     </div>
   );
 };
 
-export const mapStateToProps = (state) => ({
-  count: state.countState.count, 
-});
-
-export const mapDispatchToProps = (dispatch) => ({
-  increase: () => {
-    dispatch(createIncrementAction(1));
-  },
-  decrease: () => {
-    dispatch(createDecrementAction(1));
-  },
-});
-
-
-export default connect(mapStateToProps, mapDispatchToProps)(Count);
+export default Count
