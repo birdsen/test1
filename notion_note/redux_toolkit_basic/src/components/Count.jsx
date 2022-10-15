@@ -1,19 +1,16 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  createIncrementAction,
-  createDecrementAction,
-} from "../redux/slices/count";
+import { increment, decrement } from "../redux/slices/count";
 
 const Count = () => {
-  const num = useSelector(state => state.countState.count)
+  const num = useSelector(state => state.counter.count)
   const dispatch = useDispatch()
 
   const handleIncrease = () => {
-    dispatch(createIncrementAction(1))
+    dispatch(increment(1))
   };
   const handleDecrease = () => {
-    dispatch(createDecrementAction(1))
+    dispatch(decrement(1))
   };
 
   return (

@@ -1,10 +1,10 @@
-import { createStore, combineReducers } from "redux";
+import { configureStore } from "@reduxjs/toolkit";
 import countReducer from "./slices/count";
 
-const allReducer = combineReducers({
-    countState: countReducer,
+const store = configureStore({
+    reducer: {
+        counter: countReducer,
+    },
 });
-
-const store = createStore(allReducer);
 
 export default store;

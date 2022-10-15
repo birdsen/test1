@@ -2,3 +2,4 @@
 - 以下项目均可以直接运行，其他项目均未经实践验证：
     - react_redux_basic2
     - react_redux_hook
+    - redux_toolkit_basic

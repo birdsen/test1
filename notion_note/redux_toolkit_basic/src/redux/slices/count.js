@@ -1,18 +1,26 @@
-import { INCREMENT, DECREMENT } from "../constants";
+import { createSlice } from "@reduxjs/toolkit";
 
-const initState = { count: 0 };
+const initialState = { count: 0 };
 
-export default function countReducer(preState = initState, action) {
-    const { type, data } = action;
-    switch (type) {
-        case INCREMENT:
-            return { count: preState.count + data }; // 有return，就不需要break了
-        case DECREMENT:
-            return { count: preState.count - data };
-        default:
-            return preState;
-    }
-}
+/**--countSlice--
+ * 接收一组 reducer 函数的对象，一个 slice 切片名和初始状态 initial state，
+ * 并自动生成具有相应 action creator 和 action type 的 slice reducer
+ */
+export const countSlice = createSlice({
+    name: "counter",
+    initialState: initialState,
+    reducers: {
+        increment: (state, action) => {
+            state.count += action.payload;
+        },
+        decrement: (state, action) => {
+            state.count -= action.payload;
+        },
+    },
+});
 
-export const createIncrementAction = (data) => ({ type: INCREMENT, data }); // 圆括号是为了返回对象
-export const createDecrementAction = (data) => ({ type: DECREMENT, data });
+// 向UI组件暴露 actions
+export const { increment, decrement } = countSlice.actions;
+
+// 向 store 暴露 reducer
+export default countSlice.reducer;
